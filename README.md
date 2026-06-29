@@ -9,15 +9,24 @@ como archivo MP3 para entrenar el reconocimiento auditivo.
 - Python 3.10+
 - [ffmpeg](https://ffmpeg.org/) instalado en el sistema
   ```bash
-  brew install ffmpeg        # macOS
-  sudo apt install ffmpeg    # Ubuntu/Debian
+  brew install ffmpeg                # macOS
+  sudo apt install ffmpeg            # Ubuntu/Debian
+  winget install ffmpeg              # Windows
   ```
 
 ## Instalación
 
 ```bash
+# macOS / Linux
 python3 -m venv venv
 source venv/bin/activate
+pip install -r requirements.txt
+```
+
+```powershell
+# Windows (PowerShell)
+python -m venv venv
+.\venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
@@ -35,12 +44,19 @@ python generate_interval.py A3 octava --instrument organ --duration 3
 
 # Onda senoidal pura
 python generate_interval.py F#4 tercera_menor -i sine -d 2
+```
 
-# Generar los 12 intervalos desde C4
-./generate_all.sh
+```bash
+# macOS / Linux — generar los 12 intervalos
+./generate_all.sh                     # C4, 2s, piano
+./generate_all.sh A3 1.5 organ        # desde A3, 1.5s, órgano
+```
 
-# Desde otra nota, duración e instrumento
-./generate_all.sh A3 1.5 organ
+```powershell
+# Windows — generar los 12 intervalos (PowerShell)
+foreach ($i in @("segunda_menor","segunda_mayor","tercera_menor","tercera_mayor","cuarta_justa","tritono","quinta_justa","sexta_menor","sexta_mayor","septima_menor","septima_mayor","octava")) {
+    python generate_interval.py C4 $i --duration 2 --instrument piano
+}
 ```
 
 Los archivos MP3 se guardan en `output/` con el formato `{nota}_{intervalo}_{instrumento}.mp3`.
@@ -85,8 +101,8 @@ soundGen/
 ├── docs/plan.md              # Documentación técnica
 ├── output/                   # MP3 generados
 ├── venv/                     # Entorno virtual
-├── generate_interval.py      # Script principal
-├── generate_all.sh           # Genera todos los intervalos
+├── generate_interval.py      # Script principal (multiplataforma)
+├── generate_all.sh           # Genera todos los intervalos (macOS/Linux)
 ├── requirements.txt          # Dependencias Python
 └── README.md
 ```
